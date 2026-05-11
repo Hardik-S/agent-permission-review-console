@@ -39,6 +39,7 @@ export interface AccessReviewPacket {
   writeLikeCount: number;
   recommendedDecision: ReviewerDecision;
   rollbackRequired: boolean;
+  rollbackPlanMissing: boolean;
   findings: PermissionFinding[];
 }
 
@@ -179,7 +180,8 @@ export function createAccessReviewPacket(agent: AgentSpec): AccessReviewPacket {
   const overbroadCount = findings.filter((finding) => finding.severity !== 'low').length;
   const writeLikeCount = agent.permissions.filter((permission) => writeLikeActions.has(permission.action)).length;
   const rollbackRequired = writeLikeCount > 0 || overbroadCount > 0;
-  const recommendedDecision = findings.some((finding) => finding.reviewerDecision === 'block')
+  const rollbackPlanMissing = rollbackRequired && agent.rollbackPlan.trim().length === 0;
+  const recommendedDecision = rollbackPlanMissing || findings.some((finding) => finding.reviewerDecision === 'block')
     ? 'block'
     : findings.some((finding) => finding.reviewerDecision === 'limit')
       ? 'limit'
@@ -194,6 +196,7 @@ export function createAccessReviewPacket(agent: AgentSpec): AccessReviewPacket {
     writeLikeCount,
     recommendedDecision,
     rollbackRequired,
+    rollbackPlanMissing,
     findings,
   };
 }

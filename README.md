@@ -76,3 +76,4 @@ Deployment evidence from the worker run:
 - Kept all data local and synthetic so the repository can remain public under `Hardik-S`.
 - Modeled reviewer decisions explicitly as `approve`, `limit`, or `block` to make the review packet actionable.
 - Avoided live agent/tool calls because the product value is permission review and rollback planning, not agent autonomy.
+- Treat a missing rollback plan as a blocking review state whenever write-like or overbroad permissions require rollback coverage; this keeps the packet from approving risky access with an empty remediation path.

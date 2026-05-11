@@ -24,4 +24,16 @@ describe('permission review logic', () => {
     expect(summary.blockedAgents).toBe(1);
     expect(summary.rollbackPlansRequired).toBe(3);
   });
+
+  it('blocks write-like access when the rollback plan is missing', () => {
+    const packet = createAccessReviewPacket({
+      ...agentSpecs[0],
+      id: 'support-triage-without-rollback',
+      rollbackPlan: '   ',
+    });
+
+    expect(packet.rollbackRequired).toBe(true);
+    expect(packet.rollbackPlanMissing).toBe(true);
+    expect(packet.recommendedDecision).toBe('block');
+  });
 });
