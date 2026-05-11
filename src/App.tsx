@@ -117,8 +117,14 @@ function App() {
             </article>
             <article>
               <p className="section-label">Rollback notes</p>
-              <h3>{packet.rollbackRequired ? 'Rollback plan required' : 'Monitor only'}</h3>
-              <p>{selectedAgent.rollbackPlan}</p>
+              <h3>
+                {packet.rollbackPlanMissing
+                  ? 'Rollback plan missing'
+                  : packet.rollbackRequired
+                    ? 'Rollback plan required'
+                    : 'Monitor only'}
+              </h3>
+              <p>{packet.rollbackPlanMissing ? 'A rollback plan is required before this agent can be approved.' : selectedAgent.rollbackPlan}</p>
               <div className="boundary-note">No real tools, secrets, user records, or company systems are connected.</div>
             </article>
           </div>
