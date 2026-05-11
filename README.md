@@ -62,7 +62,13 @@ Current worker-run verification:
 
 Expected deployment target: Vercel static production deployment.
 
-Production URL: pending until the worker run completes Vercel deployment.
+Production URL: https://agent-permission-review-console.vercel.app
+
+Deployment evidence from the worker run:
+
+- Vercel project: `batb4016-9101s-projects/agent-permission-review-console`.
+- Inspect URL: https://vercel.com/batb4016-9101s-projects/agent-permission-review-console/6NM9Yh1yAptWEAwiGSHyg25wGGmw
+- Production alias smoke found `Agent Permission Review Console`, `Permission matrix`, and `Access-review packet` in the deployed asset.
 
 ## Decisions Made
 
