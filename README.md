@@ -36,6 +36,7 @@ The first slice treats permissions as reviewable operating boundaries:
 - `read` actions are lower risk unless they touch restricted or cross-customer data.
 - `write`, `export`, and `notify` actions require stronger reviewer decisions because they can mutate records or disclose information.
 - Scopes marked `restricted`, `customer`, `financial`, or `employee` raise blast-radius concerns.
+- Employee data stays reviewer-limited even for read-only requests because HRIS-style profile access still exposes private internal records and should not become auto-approval traffic.
 - Rollback notes are mandatory when an agent can write, export, or notify from a sensitive system.
 
 These rules are deliberately conservative. They are meant to surface reviewer questions, not to replace a security review.
@@ -77,3 +78,4 @@ Deployment evidence from the worker run:
 - Modeled reviewer decisions explicitly as `approve`, `limit`, or `block` to make the review packet actionable.
 - Avoided live agent/tool calls because the product value is permission review and rollback planning, not agent autonomy.
 - Treat a missing rollback plan as a blocking review state whenever write-like or overbroad permissions require rollback coverage; this keeps the packet from approving risky access with an empty remediation path.
+- Keep employee-data reads at `limit` rather than `approve`; this is intentionally stricter than public/internal reads and keeps private workforce data visible in the reviewer packet before an internal agent ships.
