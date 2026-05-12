@@ -154,6 +154,17 @@ export function classifyPermission(permission: PermissionRequest): PermissionFin
     };
   }
 
+  if (permission.sensitivity === 'employee') {
+    return {
+      system: permission.system,
+      scope: permission.scope,
+      action: permission.action,
+      severity: 'medium',
+      reason: 'Employee data access needs reviewer-scoped limits even when the first request is read-only.',
+      reviewerDecision: 'limit',
+    };
+  }
+
   if ((touchesSensitiveData && mutatesOrDiscloses) || broadScope) {
     return {
       system: permission.system,

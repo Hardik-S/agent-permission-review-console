@@ -17,6 +17,19 @@ describe('permission review logic', () => {
     expect(classifyPermission(crmWrite!).reviewerDecision).toBe('limit');
   });
 
+  it('limits employee data reads even without write-like access', () => {
+    const employeeRead = classifyPermission({
+      system: 'HRIS',
+      scope: 'Team member profile',
+      action: 'read',
+      sensitivity: 'employee',
+      justification: 'Checks onboarding state before assigning internal workflow tasks.',
+    });
+
+    expect(employeeRead.severity).toBe('medium');
+    expect(employeeRead.reviewerDecision).toBe('limit');
+  });
+
   it('summarizes reviewer workload for the access-review packet', () => {
     const summary = summarizePortfolio(agentSpecs);
 
