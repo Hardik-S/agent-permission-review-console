@@ -30,6 +30,19 @@ describe('permission review logic', () => {
     expect(employeeRead.reviewerDecision).toBe('limit');
   });
 
+  it('does not mark narrow scopes broad because they contain broad-scope substrings', () => {
+    const callSummaryRead = classifyPermission({
+      system: 'Call center archive',
+      scope: 'Call transcript summaries',
+      action: 'read',
+      sensitivity: 'internal',
+      justification: 'Reads summarized internal coaching notes for reviewer calibration.',
+    });
+
+    expect(callSummaryRead.severity).toBe('low');
+    expect(callSummaryRead.reviewerDecision).toBe('approve');
+  });
+
   it('summarizes reviewer workload for the access-review packet', () => {
     const summary = summarizePortfolio(agentSpecs);
 
