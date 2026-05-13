@@ -141,7 +141,7 @@ const writeLikeActions = new Set<PermissionAction>(['write', 'export', 'notify']
 export function classifyPermission(permission: PermissionRequest): PermissionFinding {
   const touchesSensitiveData = sensitiveScopes.has(permission.sensitivity);
   const mutatesOrDiscloses = writeLikeActions.has(permission.action);
-  const broadScope = /all|ledger|account|entries|customer/i.test(permission.scope);
+  const broadScope = /\b(?:all|ledger|account|entries|customer)\b/i.test(permission.scope);
 
   if (permission.sensitivity === 'restricted' || (touchesSensitiveData && permission.action === 'export')) {
     return {
