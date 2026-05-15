@@ -17,6 +17,14 @@ describe('permission review logic', () => {
     expect(classifyPermission(crmWrite!).reviewerDecision).toBe('limit');
   });
 
+  it('limits internal draft writes even when the data scope is narrow', () => {
+    const salesPacket = createAccessReviewPacket(agentSpecs[2]);
+
+    expect(salesPacket.recommendedDecision).toBe('limit');
+    expect(salesPacket.overbroadCount).toBe(1);
+    expect(salesPacket.findings.find((finding) => finding.system === 'CRM')?.reviewerDecision).toBe('limit');
+  });
+
   it('limits employee data reads even without write-like access', () => {
     const employeeRead = classifyPermission({
       system: 'HRIS',
@@ -48,6 +56,8 @@ describe('permission review logic', () => {
 
     expect(summary.agentsReviewed).toBe(3);
     expect(summary.blockedAgents).toBe(1);
+    expect(summary.limitedAgents).toBe(2);
+    expect(summary.approvalReadyAgents).toBe(0);
     expect(summary.rollbackPlansRequired).toBe(3);
   });
 

@@ -80,3 +80,4 @@ Deployment evidence from the worker run:
 - Treat a missing rollback plan as a blocking review state whenever write-like or overbroad permissions require rollback coverage; this keeps the packet from approving risky access with an empty remediation path.
 - Keep employee-data reads at `limit` rather than `approve`; this is intentionally stricter than public/internal reads and keeps private workforce data visible in the reviewer packet before an internal agent ships.
 - Match broad-scope keywords as whole words, not substrings, so narrow scopes such as call transcripts do not get escalated simply because a word contains `all`.
+- Limit every write-like action, including narrow internal draft writes, because the review model treats mutation, export, and notification capability as a deployment-control question even when the underlying data is not customer, employee, financial, or restricted.

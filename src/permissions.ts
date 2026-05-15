@@ -165,7 +165,7 @@ export function classifyPermission(permission: PermissionRequest): PermissionFin
     };
   }
 
-  if ((touchesSensitiveData && mutatesOrDiscloses) || broadScope) {
+  if (mutatesOrDiscloses || broadScope) {
     return {
       system: permission.system,
       scope: permission.scope,
