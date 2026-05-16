@@ -51,6 +51,19 @@ describe('permission review logic', () => {
     expect(callSummaryRead.reviewerDecision).toBe('approve');
   });
 
+  it('blocks permissions that do not explain the access rationale', () => {
+    const unexplainedRead = classifyPermission({
+      system: 'Knowledge base',
+      scope: 'Published help articles',
+      action: 'read',
+      sensitivity: 'public',
+      justification: '   ',
+    });
+
+    expect(unexplainedRead.severity).toBe('high');
+    expect(unexplainedRead.reviewerDecision).toBe('block');
+  });
+
   it('summarizes reviewer workload for the access-review packet', () => {
     const summary = summarizePortfolio(agentSpecs);
 
