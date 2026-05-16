@@ -143,6 +143,17 @@ export function classifyPermission(permission: PermissionRequest): PermissionFin
   const mutatesOrDiscloses = writeLikeActions.has(permission.action);
   const broadScope = /\b(?:all|ledger|account|entries|customer)\b/i.test(permission.scope);
 
+  if (permission.justification.trim().length === 0) {
+    return {
+      system: permission.system,
+      scope: permission.scope,
+      action: permission.action,
+      severity: 'high',
+      reason: 'Permission requests without an access rationale cannot be approved or limited safely.',
+      reviewerDecision: 'block',
+    };
+  }
+
   if (permission.sensitivity === 'restricted' || (touchesSensitiveData && permission.action === 'export')) {
     return {
       system: permission.system,
